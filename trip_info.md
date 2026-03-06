@@ -21,7 +21,7 @@
 ---
 
 ## 🔗 在线行程
-**https://maverikhe-cpu.github.io/paris-trip-2026/**
+**https://paris-trip-2026-lake.vercel.app**
 
 ---
 
