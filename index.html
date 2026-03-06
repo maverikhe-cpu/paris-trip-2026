@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巴黎之旅 2026 | Paris Trip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #E50114;
+            --secondary: #1A1A2E;
+            --accent: #FFD700;
+            --light: #F8F9FA;
+            --dark: #16213E;
+            --text: #2D3436;
+            --disney: #0065FF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            min-height: 100vh;
+            color: var(--text);
+        }
+        
+        .hero {
+            background: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1920') center/cover;
+            height: 60vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(26,26,46,0.3), rgba(26,26,46,0.9));
+        }
+        
+        .hero-content {
+            position: relative;
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.5);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .hero .dates {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 1.2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .tab:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .day-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .day-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .day-header {
+            background: linear-gradient(135deg, var(--secondary), var(--dark));
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .day-number {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+        
+        .day-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .day-date {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .day-header.disney {
+            background: linear-gradient(135deg, var(--disney), #0044B3);
+        }
+        
+        .day-body {
+            padding: 2rem;
+        }
+        
+        .activity {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            min-width: 80px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .activity-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .activity-content p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .activity-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #f0f0f0;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        .tag-food { background: #FFE5E5; color: #C41E3A; }
+        .tag-museum { background: #E5F0FF; color: #0065FF; }
+        .tag-sightseeing { background: #FFF3E0; color: #FF6D00; }
+        .tag-shopping { background: #FCE4EC; color: #E91E63; }
+        .tag-photo { background: #E8F5E9; color: #2E7D32; }
+        .tag-disney { background: #E3F2FD; color: #0065FF; }
+        
+        .map-container {
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .info-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .info-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown {
+            background: linear-gradient(135deg, var(--primary), #C41E3A);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .countdown h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown .days {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .countdown .label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .disney-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--disney);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .day-header { flex-direction: column; gap: 1rem; text-align: center; }
+            .activity { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h1>巴黎之旅</h1>
+            <p class="subtitle">Paris Trip 2026</p>
+            <div class="dates">
+                📅 2026年3月5日 - 3月13日
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="countdown">
+            <h2>🎉 Disneyland Paris</h2>
+            <div class="days">3月13日</div>
+            <p class="label">行程最后一天！</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('itinerary')">📅 每日行程</button>
+            <button class="tab" onclick="showTab('tips')">💡 实用攻略</button>
+            <button class="tab" onclick="showTab('map')">🗺️ 地图</button>
+            <button class="tab" onclick="showTab('checklist')">✅ 待办清单</button>
+        </div>
+        
+        <div id="itinerary" class="tab-content active">
+            <!-- Day 1 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 1</div>
+                        <div class="day-title">抵达巴黎</div>
+                    </div>
+                    <div class="day-date">3月5日 周四</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>✈️ 抵达戴高乐机场 (CDG)</h3>
+                            <p>UA54 抵达，建议提前预订接机服务</p>
+                            <span class="activity-tag tag-sightseeing">机场交通</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">傍晚</div>
+                        <div class="activity-content">
+                            <h3>🏨 入住酒店</h3>
+                            <p>建议选择香榭丽舍大街或蒙马特高地附近</p>
+                            <span class="activity-tag tag-sightseeing">住宿</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">晚上</div>
+                        <div class="activity-content">
+                            <h3>🌙 漫步塞纳河畔</h3>
+                            <p>适应时差，沿着塞纳河散步，欣赏夜景</p>
+                            <span class="activity-tag tag-photo">夜景</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 2 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 2</div>
+                        <div class="day-title">经典巴黎</div>
+                    </div>
+                    <div class="day-date">3月6日 周五</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>🗼 埃菲尔铁塔</h3>
+                            <p>建议早上来，排队人少。可登顶俯瞰巴黎全景</p>
+                            <span class="activity-tag tag-sightseeing">地标</span>
+                            <span class="activity-tag tag-photo">📸</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">中午</div>
+                        <div class="activity-content">
+                            <h3>🍽️ 战神广场野餐</h3>
+                            <p>在战神广场休息，享用午餐，感受法式生活</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>🎨 奥赛博物馆</h3>
+                            <p>从战神广场步行可达，欣赏印象派大师作品</p>
+                            <span class="activity-tag tag-museum">博物馆</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">傍晚</div>
+                        <div class="activity-content">
+                            <h3>🚢 塞纳河游船</h3>
+                            <p>日落时分游河，欣赏沿岸灯光</p>
+                            <span class="activity-tag tag-photo">日落</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 3 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 3</div>
+                        <div class="day-title">卢浮宫 & 玛黑区</div>
+                    </div>
+                    <div class="day-date">3月7日 周六</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>🏛️ 卢浮宫</h3>
+                            <p>世界最大博物馆。建议预约时间段，重点看蒙娜丽莎、胜利女神、断臂维纳斯</p>
+                            <span class="activity-tag tag-museum">博物馆</span>
+                            <span class="activity-tag tag-photo">📸</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">中午</div>
+                        <div class="activity-content">
+                            <h3>🍜 玛黑区午餐</h3>
+                            <p>玛黑区有众多小资餐厅，感受巴黎潮流</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>🛍️ 玛黑区购物</h3>
+                            <p>探索孚日广场、概念店、独立设计师店铺</p>
+                            <span class="activity-tag tag-shopping">购物</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">晚上</div>
+                        <div class="activity-content">
+                            <h3>🍷 玛黑区夜生活</h3>
+                            <p>体验巴黎酒吧文化</p>
+                            <span class="activity-tag tag-food">夜生活</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 4 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 4</div>
+                        <div class="day-title">蒙马特 & 圣心大教堂</div>
+                    </div>
+                    <div class="day-date">3月8日 周日</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>⛪ 圣心大教堂</h3>
+                            <p>俯瞰巴黎全景，参观白色圆顶教堂</p>
+                            <span class="activity-tag tag-sightseeing">宗教</span>
+                            <span class="activity-tag tag-photo">📸</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">中午</div>
+                        <div class="activity-content">
+                            <h3>🍕 蒙马特午餐</h3>
+                            <p>小丘广场附近的传统法餐</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>🎨 蒙马特艺术家广场</h3>
+                            <p>看街头艺术家创作，体验波西米亚风情</p>
+                            <span class="activity-tag tag-photo">艺术</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">傍晚</div>
+                        <div class="activity-content">
+                            <h3>🍷 红磨坊/黑猫酒吧（可选）</h3>
+                            <p>体验巴黎夜文化</p>
+                            <span class="activity-tag tag-food">夜生活</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 5 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 5</div>
+                        <div class="day-title">凡尔赛宫</div>
+                    </div>
+                    <div class="day-date">3月9日 周一</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>🏰 凡尔赛宫</h3>
+                            <p>太阳王的奢华宫殿，建议提前预约</p>
+                            <span class="activity-tag tag-sightseeing">历史</span>
+                            <span class="activity-tag tag-museum">博物馆</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">中午</div>
+                        <div class="activity-content">
+                            <h3>🍽️ 凡尔赛宫内午餐</h3>
+                            <p>宫内有餐厅或自带野餐</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>🌳 花园漫步</h3>
+                            <p>巨大的法式花园，夏季有音乐喷泉表演</p>
+                            <span class="activity-tag tag-photo">自然</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 6 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 6</div>
+                        <div class="day-title">左岸 & 拉丁区</div>
+                    </div>
+                    <div class="day-date">3月10日 周二</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>📚 莎士比亚书店</h3>
+                            <p> Hemingway 曾来的书店，巴黎必打卡</p>
+                            <span class="activity-tag tag-sightseeing">文化</span>
+                            <span class="activity-tag tag-photo">📸</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">中午</div>
+                        <div class="activity-content">
+                            <h3>🥐 左岸早午餐</h3>
+                            <p>体验经典法式早午餐</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>🗿 先贤祠</h3>
+                            <p>安葬法国伟人的神殿</p>
+                            <span class="activity-tag tag-sightseeing">历史</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">傍晚</div>
+                        <div class="activity-content">
+                            <h3>🌉 亚历山大三世桥</h3>
+                            <p>塞纳河上最华丽的桥，欣赏日落</p>
+                            <span class="activity-tag tag-photo">日落</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 7 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 7</div>
+                        <div class="day-title">歌剧院 & 购物日</div>
+                    </div>
+                    <div class="day-date">3月11日 周三</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>🎭 加尼尔歌剧院</h3>
+                            <p>《歌剧魅影》原型，华丽非凡</p>
+                            <span class="activity-tag tag-sightseeing">建筑</span>
+                            <span class="activity-tag tag-photo">📸</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">中午</div>
+                        <div class="activity-content">
+                            <h3>🛍️ 老佛爷百货</h3>
+                            <p>巴黎最著名的百货公司，可办理退税</p>
+                            <span class="activity-tag tag-shopping">购物</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">下午</div>
+                        <div class="activity-content">
+                            <h3>🛍️ 春天百货 / 香榭丽舍</h3>
+                            <p>继续购物，买伴手礼</p>
+                            <span class="activity-tag tag-shopping">购物</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">晚上</div>
+                        <div class="activity-content">
+                            <h3>🍽️ 香榭丽舍晚餐</h3>
+                            <p>在世界上最美丽的大道享用晚餐</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 8 -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-number">Day 8</div>
+                        <div class="day-title">最后一天自由活动</div>
+                    </div>
+                    <div class="day-date">3月12日 周四</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">全天</div>
+                        <div class="activity-content">
+                            <h3>🗺️ 自由活动</h3>
+                            <p>根据喜好自行安排：</p>
+                            <ul>
+                                <li>继续购物</li>
+                                <li>探访未完成的景点</li>
+                                <li>咖啡馆发呆</li>
+                                <li>拍照打卡</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">晚上</div>
+                        <div class="activity-content">
+                            <h3>🍷 告别晚餐</h3>
+                            <p>选择一家米其林餐厅，为旅程画上完美句号</p>
+                            <span class="activity-tag tag-food">美食</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day 9 - DISNEY -->
+            <div class="day-card">
+                <div class="day-header disney">
+                    <div>
+                        <div class="day-number">Day 9 - 最后一天！</div>
+                        <div class="day-title">🎢 Disneyland Paris</div>
+                    </div>
+                    <div class="day-date">3月13日 周五</div>
+                </div>
+                <div class="day-body">
+                    <div class="activity">
+                        <div class="activity-time">上午</div>
+                        <div class="activity-content">
+                            <h3>🎢 抵达迪士尼</h3>
+                            <p>从巴黎市中心乘坐RER A线直达Disneyland，建议开门就进</p>
+                            <span class="activity-tag tag-disney">🚄 交通</span>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">全天</div>
+                        <div class="activity-content">
+                            <h3>🎢 必玩项目</h3>
+                            <ul>
+                                <li><strong>Hyperspace Mountain</strong> - 室内过山车</li>
+                                <li><strong>Indiana Jones™ et le Temple du Péril</strong> - 经典过山车</li>
+                                <li><strong>Big Thunder Mountain</strong> - 雷鸣山漂流</li>
+                                <li><strong>Buzz Lightyear Laser Blast</strong> - 巴斯光年射击</li>
+                                <li><strong>It's a Small World</strong> - 小小世界</li>
+                                <li><strong>Disney Illuminations</strong> - 城堡烟火秀</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">晚上</div>
+                        <div class="activity-content">
+                            <h3>🎆 烟火表演</h3>
+                            <p>Disney Illuminations 城堡烟火秀，为旅程画上完美句号！</p>
+                        </div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-time">返程</div>
+                        <div class="activity-content">
+                            <h3>✈️ 前往机场</h3>
+                            <p>UA55 返程</p>
+                            <span class="activity-tag tag-sightseeing">交通</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tips" class="tab-content">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">💡 巴黎旅游实用攻略</div>
+                </div>
+                <div class="day-body">
+                    <h3>🗣️ 语言</h3>
+                    <p>法语为主，但年轻人普遍会说英语。学会几句法语会让当地人更友好：</p>
+                    <ul>
+                        <li>Bonjour - 你好</li>
+                        <li>Merci - 谢谢</li>
+                        <li>S'il vous plaît - 请</li>
+                        <li>L'addition, s'il vous plaît - 请结账</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>💶 货币</h3>
+                    <p>欧元（€），大部分地方接受信用卡</p>
+                    <br>
+                    
+                    <h3>🚌 交通</h3>
+                    <ul>
+                        <li><strong>地铁：</strong>最方便，覆盖全城</li>
+                        <li><strong>RER：</strong>通往凡尔赛宫、迪士尼、机场</li>
+                        <li><strong>出租车：</strong>可用 Uber 或 G7</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>🎫 景点门票</h3>
+                    <ul>
+                        <li>卢浮宫：建议提前在官网预约</li>
+                        <li>埃菲尔铁塔：建议预约登顶时间</li>
+                        <li>凡尔赛宫：建议预约</li>
+                        <li>迪士尼：建议购买 Express Pass</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>☀️ 天气（3月）</h3>
+                    <p>平均气温 5-12°C，建议带薄外套和雨伞</p>
+                    <br>
+                    
+                    <h3>🔌 插头</h3>
+                    <p>欧标插头（两圆孔）</p>
+                    <br>
+                    
+                    <h3>📱 APP 推荐</h3>
+                    <ul>
+                        <li>Google Maps / Citymapper - 导航</li>
+                        <li>Uber / G7 - 打车</li>
+                        <li>TripAdvisor - 餐厅点评</li>
+                        <li>Velib - 租自行车</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="map" class="tab-content">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">🗺️ 巴黎主要景点地图</div>
+                </div>
+                <div class="day-body">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2624.215602587552!2d2.289671676982516!3d48.85884407138624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sParis%20attractions!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="checklist" class="tab-content">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">✅ 出行前待办清单</div>
+                </div>
+                <div class="day-body">
+                    <h3>✈️ 机票 & 交通</h3>
+                    <ul>
+                        <li>✅ 确认 UA54 / UA55 航班信息</li>
+                        <li>[ ] 预订机场接送</li>
+                        <li>[ ] 购买巴黎交通票（Navigo）</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>🏨 住宿</h3>
+                    <ul>
+                        <li>[ ] 预订酒店（建议香榭丽舍/玛黑/蒙马特）</li>
+                        <li>[ ] 确认入住/退房时间</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>🎫 景点门票</h3>
+                    <ul>
+                        <li>[ ] 卢浮宫门票</li>
+                        <li>[ ] 埃菲尔铁塔登顶票</li>
+                        <li>[ ] 凡尔赛宫门票</li>
+                        <li>[ ] 迪士尼门票</li>
+                        <li>[ ] 塞纳河游船票</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>📱 通讯 & APP</h3>
+                    <ul>
+                        <li>[ ] 购买欧洲电话卡 / 开通漫游</li>
+                        <li>[ ] 下载必备 APP</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>💰 财务</h3>
+                    <ul>
+                        <li>[ ] 兑换欧元现金</li>
+                        <li>[ ] 确认信用卡海外使用</li>
+                        <li>[ ] 了解退税政策</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>🧳 行李</h3>
+                    <ul>
+                        <li>[ ] 护照</li>
+                        <li>[ ] 欧标转换插头</li>
+                        <li>[ ] 薄外套</li>
+                        <li>[ ] 雨伞</li>
+                        <li>[ ] 舒适步行鞋</li>
+                        <li>[ ] 充电宝</li>
+                    </ul>
+                    <br>
+                    
+                    <h3>🛡️ 保险</h3>
+                    <ul>
+                        <li>[ ] 购买旅行保险</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="icon">🗣️</div>
+                <h3>语言</h3>
+                <p>法语为主，但英语通用。学几句法语会更受欢迎！</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">💶</div>
+                <h3>货币</h3>
+                <p>欧元€，大部分地方接受信用卡</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🚌</div>
+                <h3>交通</h3>
+                <p>地铁 + RER 最方便，Uber/G7 打车也便利</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">☀️</div>
+                <h3>天气</h3>
+                <p>3月气温 5-12°C，建议带薄外套和雨伞</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Made with ❤️ by Marble | Paris Trip 2026</p>
+    </footer>
+    
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
